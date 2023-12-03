@@ -13,7 +13,7 @@ from orders.api.schemas import (
     GetOrdersSchema
 )
 
-# レスポンスデータ
+# テストデータ
 orders = [
     {
         'id': 'ff0f1355-e821-4178-9567-550dec27a373',
@@ -47,7 +47,7 @@ orders = [
 ]
 
 
-# endpoint
+# OrdersAPI
 @app.get('/orders', response_model=GetOrdersSchema)
 def get_orders():
     return {'orders': orders}

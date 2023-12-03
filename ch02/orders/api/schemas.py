@@ -22,7 +22,6 @@ class StatusEnum(Enum):
     delivered = "delivered"
 
 
-# pydanticモデルはそれぞれpydanticのBaseModelを継承
 class OrderItemSchema(BaseModel):
     product: str
     size: Size
