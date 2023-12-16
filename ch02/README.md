@@ -17,4 +17,10 @@ $ souce venv/bin/activate
 (venv)$ deactivate
 # 再度入る場合
  $ souce venv/bin/activate
+ 
+ 
+ # dockerfileから実行
+$ docker build --no-cache -t orders_service:1.0.0 . 
+$ docker run --rm -p 8000:8000 orders_service:1.0.0 uvicorn orders.app:app --host 0.0.0.0 --port 8000 --reload
+
 ```
