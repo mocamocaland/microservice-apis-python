@@ -16,7 +16,7 @@ $ souce venv/bin/activate
 # 仮想環境を抜ける
 (venv)$ deactivate
 # 再度入る場合
- $ souce venv/bin/activate
+$ souce venv/bin/activate
  
  
 # dockerfileから実行
