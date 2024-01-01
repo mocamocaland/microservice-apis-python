@@ -1,3 +1,4 @@
+from typing import Dict, Any
 import uuid
 from datetime import datetime
 from uuid import UUID
@@ -47,7 +48,7 @@ orders = [
 
 # OrdersAPI
 @app.get('/orders', response_model=GetOrdersSchema)
-def get_orders():
+def get_orders() -> dict[str, list[dict[str, Any]]]:
     return {'orders': orders}
 
 
@@ -56,8 +57,8 @@ def get_orders():
     status_code=status.HTTP_201_CREATED,
     response_model=GetOrderSchema
 )
-def create_order(order_details: CreateOrderSchema):
-    order = order_details.dict()
+def create_order(order_details: CreateOrderSchema) -> Any:
+    order = order_details.Dict()
     order["id"] = uuid.uuid4()
     order["created"] = datetime.utcnow()
     order["status"] = "created"
@@ -66,20 +67,29 @@ def create_order(order_details: CreateOrderSchema):
 
 
 @app.get('/orders/{order_id}', response_model=GetOrderSchema)
-def get_order(order_id: UUID):
+def get_order(order_id: UUID) -> dict[str, Any]:
     for order in orders:
         if order["id"] == order_id:
             return order
-    raise HTTPException(status_code=404, detail=f"Order with ID {order_id} not found")
+    raise HTTPException(
+        status_code=404,
+        detail=f"Order with ID {order_id} not found"
+    )
 
 
 @app.put('/orders/{order_id}', response_model=GetOrderSchema)
-def update_order(order_id: UUID, order_details: CreateOrderSchema):
+def update_order(
+            order_id: UUID,
+            order_details: CreateOrderSchema
+        ) -> Dict[str, Any]:
     for order in orders:
         if order["id"] == order_id:
-            order.update(order_details.dict())
+            order.update(order_details.Dict())
             return order
-    raise HTTPException(status_code=404, detail=f"Order with ID {order_id} not found")
+    raise HTTPException(
+        status_code=404,
+        detail=f"Order with ID {order_id} not found"
+    )
 
 
 @app.delete(
@@ -87,16 +97,19 @@ def update_order(order_id: UUID, order_details: CreateOrderSchema):
     status_code=status.HTTP_204_NO_CONTENT,
     response_class=Response,
 )
-def delete_order(order_id: UUID):
+def delete_order(order_id: UUID) -> None:
     for index, order in enumerate(orders):
         if order["id"] == order_id:
             orders.pop(index)
             return
-    raise HTTPException(status_code=404, detail=f"Order with ID {order_id} not found")
+    raise HTTPException(
+        status_code=404,
+        detail=f"Order with ID {order_id} not found"
+    )
 
 
 @app.post('/orders/{order_id}/cancel', response_model=GetOrderSchema)
-def cancel_order(order_id: UUID):
+def cancel_order(order_id: UUID) -> dict[str, Any]:
     for order in orders:
         if order["id"] == order_id:
             order["status"] = "cancelled"
@@ -105,7 +118,7 @@ def cancel_order(order_id: UUID):
 
 
 @app.post('/orders/{order_id}/pay', response_model=GetOrderSchema)
-def pay_order(order_id: UUID):
+def pay_order(order_id: UUID) -> dict[str, Any]:
     for order in orders:
         if order["id"] == order_id:
             order["status"] = "progress"
