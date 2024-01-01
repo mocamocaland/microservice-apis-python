@@ -4,7 +4,7 @@
 
 $ git clone git@github.com:mocamocaland/microservice-apis-python.git
 # venv作成
-$ cd ${your_path}/microservice-apis-python/microservice_apis_master_ch02
+$ cd ${your_path}/microservice-apis-python/microservice_apis_ch02
 $ python3 -m venv venv
 # 仮想環境に入る
 $ souce venv/bin/activate
