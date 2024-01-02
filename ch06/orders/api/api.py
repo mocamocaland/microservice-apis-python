@@ -5,8 +5,8 @@ from uuid import UUID
 from fastapi import HTTPException
 from starlette import status
 from starlette.responses import Response
-from orders.app import app
-from orders.api.schemas import (
+from app import app
+from api.schemas import (
     GetOrderSchema,
     CreateOrderSchema,
     GetOrdersSchema
