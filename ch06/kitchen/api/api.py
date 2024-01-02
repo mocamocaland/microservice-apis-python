@@ -2,6 +2,12 @@ import uuid
 from datetime import datetime
 from flask.views import MethodView
 from flask_smorest import Blueprint
+from api.schemas import (
+    GetScheduledOrderSchema,
+    ScheduleOrderSchema,
+    GetScheduledOrdersSchema,
+    ScheduleStatusSchema
+)
 
 blueprint = Blueprint('kitchen', __name__, description='Kitchen API')
 
@@ -21,32 +27,39 @@ schedules = [{
 
 @blueprint.route('/kitchen/schedules')
 class KitchenSchedules(MethodView):
+    @blueprint.response(status_code=200, schema=GetScheduledOrdersSchema)
     def get(self):
-        return {
-            'schedules': schedules
-        }, 200
+        return {'schedules': schedules}
 
+    @blueprint.arguments(ScheduleOrderSchema)
+    @blueprint.response(status_code=201, schema=GetScheduledOrderSchema)
     def post(self, payload):
-        return schedules[0], 201
+        return schedules[0]
 
 
 @blueprint.route('/kitchen/schedules/<schedule_id>')
 class KitchenSchedule(MethodView):
+    @blueprint.response(status_code=200, schema=GetScheduledOrderSchema)
     def get(self, schedule_id):
-        return schedules[0], 200
+        return schedules[0]
 
+    @blueprint.arguments(ScheduleOrderSchema)
+    @blueprint.response(status_code=200, schema=GetScheduledOrderSchema)
     def put(self, payload, schedule_id):
-        return schedules[0], 200
+        return schedules[0]
 
+    @blueprint.response(status_code=204)
     def delete(self, schedule_id):
-        return '', 204
+        return
 
 
+@blueprint.response(status_code=200, schema=GetScheduledOrderSchema)
 @blueprint.route('/kitchen/schedules/<schedule_id>/cancel', methods=['POST'])
 def cancel_schedule(schedule_id):
-    return schedules[0], 200
+    return schedules[0]
 
 
+@blueprint.response(status_code=200, schema=ScheduleStatusSchema)
 @blueprint.route('/kitchen/schedules/<schedule_id>/status', methods=['GET'])
 def get_schedule_status(schedule_id):
-    return schedules[0], 200
+    return schedules[0]
