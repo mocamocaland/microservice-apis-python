@@ -6,7 +6,8 @@ from api.schemas import (
     GetScheduledOrderSchema,
     ScheduleOrderSchema,
     GetScheduledOrdersSchema,
-    ScheduleStatusSchema
+    ScheduleStatusSchema,
+    GetKitchenScheduleParameters
 )
 
 blueprint = Blueprint('kitchen', __name__, description='Kitchen API')
@@ -27,9 +28,38 @@ schedules = [{
 
 @blueprint.route('/kitchen/schedules')
 class KitchenSchedules(MethodView):
+    @blueprint.arguments(GetKitchenScheduleParameters, location='query')
     @blueprint.response(status_code=200, schema=GetScheduledOrdersSchema)
-    def get(self):
-        return {'schedules': schedules}
+    def get(self, parameters):
+        # no parameters
+        if not parameters:
+            return {'schedules': schedules}
+
+        query_set = [schedules for schedule in schedules]
+        in_progress = parameters.get('progress')
+        if in_progress is not None:
+            if in_progress:
+                query_set = [
+                    schedule for schedule in schedules
+                    if schedule['status'] == 'progress'
+                ]
+            else:
+                query_set = [
+                    schedule for schedule in schedules
+                    if schedule['status'] != 'progress'
+                ]
+
+        since = parameters.get('since')
+        if since is not None:
+            query_set = [
+                schedule for schedule in schedules
+                if schedule['scheduled'] >= since
+            ]
+
+        limit = parameters.get('limit')
+        if limit is not None and len(query_set) > limit:
+            query_set = query_set[:limit]
+        return {'schedules': query_set}
 
     @blueprint.arguments(ScheduleOrderSchema)
     @blueprint.response(status_code=201, schema=GetScheduledOrderSchema)
