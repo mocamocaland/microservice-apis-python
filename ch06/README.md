@@ -27,9 +27,9 @@ $ souce venv/bin/activate
 # dockerでの起動
 # orders_srvice
 $ docker build --no-cache -t orders_service:1.0.1 . 
-$ docker run --rm -p 8000:8000 orders_service:1.0.1 uvicorn app:app --host 0.0.0.0 --port 8000 --reload
+$ docker run --rm -p 8000:8000 -v ${PWD}:/orders orders_service:1.0.1 uvicorn app:app --host 0.0.0.0 --port 8000 --reload
 
 # kitchen_srvice
 $ docker build --no-cache -t kitchen_service:1.0.0 . 
-$ docker run --rm -p 5000:5000 kitchen_service:1.0.0 flask run --host 0.0.0.0 --port 5000 --reload
+$ docker run --rm -p 5000:5000 -v ${PWD}:/kitchen kitchen_service:1.0.0 flask run --host 0.0.0.0 --port 5000 --reload
 ```
