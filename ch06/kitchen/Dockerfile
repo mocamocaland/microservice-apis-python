@@ -8,7 +8,7 @@ RUN pip install -U pip
 COPY requirements.txt /kitchen/
 RUN pip install -r requirements.txt
 
-COPY api /kitchen//kitchen/api/
+COPY api /kitchen/kitchen/api/
 COPY oas.yaml /kitchen/oas.yaml
 COPY . /kitchen/
 
