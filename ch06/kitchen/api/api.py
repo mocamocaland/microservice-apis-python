@@ -1,5 +1,7 @@
+import copy
 import uuid
 from datetime import datetime
+from flask import abort
 from flask.views import MethodView
 from flask_smorest import Blueprint
 from api.schemas import (
@@ -9,21 +11,31 @@ from api.schemas import (
     ScheduleStatusSchema,
     GetKitchenScheduleParameters
 )
+from marshmallow import ValidationError
 
 blueprint = Blueprint('kitchen', __name__, description='Kitchen API')
 
-schedules = [{
-    'id': str(uuid.uuid4()),
-    'scheduled': datetime.now(),
-    'status': 'pending',
-    'order': [
-        {
-            'product': 'capuccino',
-            'quantity': 1,
-            'size': 'big'
-        }
-    ]
-}]
+# schedules = [{
+#     'id': str(uuid.uuid4()),
+#     'scheduled': datetime.now(),
+#     'status': 'pending',
+#     'order': [
+#         {
+#             'product': 'capuccino',
+#             'quantity': 1,
+#             'size': 'big'
+#         }
+#     ]
+# }]
+schedules = []
+
+
+def validate_schedule(schedule):
+    schedule = copy.deepcopy(schedule)
+    schedule['scheduled'] = schedule['scheduled'].isoformat()
+    errors = GetScheduledOrderSchema().validate(schedule)
+    if errors:
+        raise ValidationError(errors)
 
 
 @blueprint.route('/kitchen/schedules')
@@ -31,6 +43,15 @@ class KitchenSchedules(MethodView):
     @blueprint.arguments(GetKitchenScheduleParameters, location='query')
     @blueprint.response(status_code=200, schema=GetScheduledOrdersSchema)
     def get(self, parameters):
+        # データを検証
+        for schedule in schedules:
+            validate_schedule(schedule)
+            schedule = copy.deepcopy(schedule)
+            schedule['scheduled'] = schedule['scheduled'].isoformat()
+            errors = GetScheduledOrderSchema().validate(schedule)
+            if errors:
+                raise ValidationError(errors)
+
         # no parameters
         if not parameters:
             return {'schedules': schedules}
@@ -64,7 +85,12 @@ class KitchenSchedules(MethodView):
     @blueprint.arguments(ScheduleOrderSchema)
     @blueprint.response(status_code=201, schema=GetScheduledOrderSchema)
     def post(self, payload):
-        return schedules[0]
+        payload['id'] = str(uuid.uuid4())
+        payload['scheduled'] = datetime.utcnow()
+        payload['status'] = 'pending'
+        schedules.append(payload)
+        validate_schedule(payload)
+        return payload
 
 
 @blueprint.route('/kitchen/schedules/<schedule_id>')

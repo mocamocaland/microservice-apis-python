@@ -9,5 +9,6 @@ MarkupSafe==2.1.1
 marshmallow==3.20.1
 packaging==21.3
 pyparsing==3.0.9
+pyyaml==6.0
 webargs==8.2.0
 Werkzeug==2.2.2
