@@ -4,11 +4,18 @@
 
 $ git clone git@github.com:mocamocaland/microservice-apis-python.git
 
-# ordersにてvenvを作成（kitchen側も以下のように同様の手順を実施）
+# orders配下に移動（kitchen側も以下のように同様の手順を実施）
 $ cd ${your_path}/microservice-apis-python/ch06/orders
+# venvを作成(mac)
 $ python3 -m venv venv
-# 仮想環境に入る
+# venvを作成(win)
+$ python -m venv .venv
+
+# 仮想環境に入る(mac)
 $ souce venv/bin/activate
+# 仮想環境に入る(win)
+$ .venv\Scripts\activate.bat
+
 # ライブラリインストール
 (venv)$ pip install -r requirements.txt
 
@@ -20,8 +27,6 @@ $ souce venv/bin/activate
 
 # 仮想環境を抜ける
 (venv)$ deactivate
-# 再度入る場合
-$ souce venv/bin/activate
  
  
 # dockerでの起動
