@@ -24,24 +24,17 @@ services:
       DB_URL: postgresql://postgres:postgres@database:5432/postgres
     volumes:
       - ./orders:/orders
-  order-migration:
-    image: order_migration:1.0.0
-    build: ./orders
+  api-kitchen:
+    image: kitchen_service:1.0.0
+    build: ./kitchen
+    ports:
+      - 5000:5000
     depends_on:
       - database
     environment:
       DB_URL: postgresql://postgres:postgres@database:5432/postgres
-#  api-kitchen:
-#    image: kitchen_service:1.0.0
-#    build: ./kitchen
-#    ports:
-#      - 5000:5000
-#    depends_on:
-#      - database
-#    environment:
-#      DB_URL: postgresql://postgres:postgres@database:5432/postgres
-#    volumes:
-#      - ./kitchen:/kitchen
+    volumes:
+      - ./kitchen:/kitchen
 
 
 volumes:

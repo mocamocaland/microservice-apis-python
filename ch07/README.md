@@ -1,7 +1,7 @@
 # ch07
 
 ```shell
-
+# download
 $ git clone git@github.com:mocamocaland/microservice-apis-python.git
 
 # orders配下に移動（kitchen側も以下のように同様の手順を実施）
@@ -25,8 +25,10 @@ $ .venv\Scripts\activate.bat
 # kitchen_service
 (venv)$ flask run --reload
 
-# マイグレーション
-(venv)$  PYTHONPATH='/${your_path}/microservice-apis-python/ch07' alembic revision --autogenerate -m "Initial migration"
+# migrationディレクトリとalembic.iniを新規で生成する場合は実行
+(venv)$ PYTHONPATH=$(pwd) alembic revision --autogenerate -m "Initial migration"
+# モデルのスキーマを作成
+(venv)$ PYTHONPATH=$(pwd) alembic upgrade heads
 
 # 仮想環境を抜ける
 (venv)$ deactivate
@@ -35,14 +37,19 @@ $ souce venv/bin/activate
  
  
 # dockerでの起動
+$ docker compose up
+
+# migration実行,モデルのスキーマを作成
+$ docker compose exec -it api-order /bin/bash
+# migrationディレクトリとalembic.iniを新規で生成する場合のみ実行
+# PYTHONPATH=$(pwd) alembic revision --autogenerate -m "Initial migration"
+# PYTHONPATH=$(pwd) alembic upgrade heads
+
+
+# 個別でビルド、ランをする場合
 # orders_service
 $ docker build --no-cache -t orders_service:1.0.2 . 
 $ docker run --rm -p 8000:8000 -v ${PWD}:/orders orders_service:1.0.2
-
-# orders_migrations
-$ docker build -f orders/migrations.dockerfile  --no-cache -t orders_migrations:1.0.0 .
-$ docker run --rm  -v ${PWD}:/orders orders_migrations:1.0.0
-
 
 # kitchen_srvice
 $ docker build --no-cache -t kitchen_service:1.0.0 . 
