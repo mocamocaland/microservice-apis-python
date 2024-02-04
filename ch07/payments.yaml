@@ -6,10 +6,12 @@ info:
   version: 1.0.0
 
 servers:
-  - url: https://coffeemesh.com
-    description: main production server
+  - url: http://localhost:3001
+    description: URL for local development and testing
   - url: https://coffeemesh-staging.com
     description: staging server for testing purposes only
+  - url: https://coffeemesh.com
+    description: main production server
 
 paths:
   /payments:
