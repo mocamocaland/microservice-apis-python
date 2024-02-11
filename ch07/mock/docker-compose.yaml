@@ -1,0 +1,16 @@
+version: "3.9"
+services:
+  mock-api-kitchen:
+    build:
+      context:  .
+      dockerfile:
+        ./kitchen/Dockerfile
+    ports:
+      - 3000:3000
+  mock-api-payments:
+    build:
+      context:  .
+      dockerfile:
+        ./payments/Dockerfile
+    ports:
+      - 3001:3000
