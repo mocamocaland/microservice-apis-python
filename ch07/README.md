@@ -41,8 +41,11 @@ $ docker compose up
 
 # migration実行,モデルのスキーマを作成
 $ docker compose exec -it api-order /bin/bash
+
+# 以下はコンテナ内で実行する
 # migrationディレクトリとalembic.iniを新規で生成する場合のみ実行
 # PYTHONPATH=$(pwd) alembic revision --autogenerate -m "Initial migration"
+# 
 # PYTHONPATH=$(pwd) alembic upgrade heads
 
 

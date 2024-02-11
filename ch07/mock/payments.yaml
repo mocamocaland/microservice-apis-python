@@ -6,7 +6,7 @@ info:
   version: 1.0.0
 
 servers:
-  - url: http://localhost:3001
+  - url: http://127.0.0.1:3001
     description: URL for local development and testing
   - url: https://coffeemesh-staging.com
     description: staging server for testing purposes only
