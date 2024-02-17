@@ -25,25 +25,26 @@ $ .venv\Scripts\activate.bat
 # kitchen_service
 (venv)$ flask run --reload
 
-# migrationディレクトリとalembic.iniを新規で生成する場合は実行
+# migrationディレクトリとalembic.iniを新規で生成する場合のみ実行
 (venv)$ PYTHONPATH=$(pwd) alembic revision --autogenerate -m "Initial migration"
 # モデルのスキーマを作成
 (venv)$ PYTHONPATH=$(pwd) alembic upgrade heads
 
 # 仮想環境を抜ける
 (venv)$ deactivate
-# 再度入る場合
-$ souce venv/bin/activate
+```
  
- 
-# dockerでの起動
+## API(docker)
+``` 
+$ cd ${your_path}/microservice-apis-python/ch07/
 $ docker compose up
 
 # migration実行,モデルのスキーマを作成
 $ docker compose exec -it api-order /bin/bash
+
 # migrationディレクトリとalembic.iniを新規で生成する場合のみ実行
-# PYTHONPATH=$(pwd) alembic revision --autogenerate -m "Initial migration"
-# PYTHONPATH=$(pwd) alembic upgrade heads
+# $ PYTHONPATH=$(pwd) alembic revision --autogenerate -m "Initial migration"
+# $ PYTHONPATH=$(pwd) alembic upgrade heads
 
 
 # 個別でビルド、ランをする場合
@@ -54,4 +55,18 @@ $ docker run --rm -p 8000:8000 -v ${PWD}:/orders orders_service:1.0.2
 # kitchen_srvice
 $ docker build --no-cache -t kitchen_service:1.0.0 . 
 $ docker run --rm -p 5000:5000 -v ${PWD}:/kitchen kitchen_service:1.0.0 
+```
+
+## mock API
+```
+# コンテナだとリクエストが遅れないため以下で対応
+# ここは npm install @stoplight/prism-cli でも可
+$ yarn install @stoplight/prism-cli
+
+# 各yamlファイルがあるところで実行
+$ ./node_modules/.bin/prism mock kitchen.yaml --port 3000
+$ ./node_modules/.bin/prism mock payments.yaml --port 3001
+
+# curlかswaggerでレスポンスを確認
+$ curl http://localhost:3000/kitchen/schedules
 ```
