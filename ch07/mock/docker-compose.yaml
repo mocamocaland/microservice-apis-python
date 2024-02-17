@@ -1,16 +1,31 @@
 version: "3.9"
 services:
-  mock-api-kitchen:
-    build:
-      context:  .
-      dockerfile:
-        ./kitchen/Dockerfile
+  prism-kitchen:
+    image: stoplight/prism:4
+    command: 'mock /kitchen.yaml --port 3000'
+    volumes:
+      - ./kitchen.yaml:/kitchen.yaml:ro
     ports:
       - 3000:3000
-  mock-api-payments:
-    build:
-      context:  .
-      dockerfile:
-        ./payments/Dockerfile
+  prism-payments:
+    image: stoplight/prism:4
+    command: 'mock /payments.yaml --port 3001'
+    volumes:
+      - ./payments.yaml:/payments.yaml:ro
     ports:
       - 3001:3000
+
+#  mock-api-kitchen:
+#    build:
+#      context:  .
+#      dockerfile:
+#        ./kitchen/Dockerfile
+#    ports:
+#      - 3000:3000
+#  mock-api-payments:
+#    build:
+#      context:  .
+#      dockerfile:
+#        ./payments/Dockerfile
+#    ports:
+#      - 3001:3000
