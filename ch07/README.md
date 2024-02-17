@@ -1,9 +1,14 @@
 # ch07
 
+
+## download
 ```shell
-# download
 $ git clone git@github.com:mocamocaland/microservice-apis-python.git
 
+```
+
+## API(dockerなし)
+```
 # orders配下に移動（kitchen側も以下のように同様の手順を実施）
 $ cd ${your_path}/microservice-apis-python/ch07/orders
 # venvを作成(mac)
@@ -36,18 +41,17 @@ $ .venv\Scripts\activate.bat
  
 ## API(docker)
 ``` 
-$ cd ${your_path}/microservice-apis-python/ch07/
+$ cd ${your_path}/microservice-apis-python/ch07
 $ docker compose up
 
 # migration実行,モデルのスキーマを作成
 $ docker compose exec -it api-order /bin/bash
-
 # migrationディレクトリとalembic.iniを新規で生成する場合のみ実行
 # $ PYTHONPATH=$(pwd) alembic revision --autogenerate -m "Initial migration"
 # $ PYTHONPATH=$(pwd) alembic upgrade heads
 
 
-# 個別でビルド、ランをする場合
+# 個別でビルド、ランをする場合（docker compose upを実行してる場合、以下は不要）
 # orders_service
 $ docker build --no-cache -t orders_service:1.0.2 . 
 $ docker run --rm -p 8000:8000 -v ${PWD}:/orders orders_service:1.0.2
