@@ -12,6 +12,6 @@ COPY web /products/products/web/
 COPY web/products.graphql /products/web/
 COPY . /products/
 
-EXPOSE 8000
+EXPOSE 8001
 
 CMD ["uvicorn", "server:server", "--host", "0.0.0.0", "--port", "8001", "--reload"]
