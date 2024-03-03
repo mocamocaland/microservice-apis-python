@@ -56,7 +56,6 @@ def resolve_products(*_, input=None):
         key=lambda product: product.get(input['sortBy'], 0),
         reverse=input['sort'] == 'DESCENDING'
     )
-    # return get_page(filtered, input['resultsPerPage'], input['page'])
     return filtered
 
 @query.field('product')

@@ -6,8 +6,7 @@ info:
   version: 1.0.0
 
 servers:
-  - url: https://mock-api-kitchen.mock.orb.local/
-#  - url: http://127.0.0.1:3000
+  - url: http://127.0.0.1:3000
     description: URL for local development and testing
   - url: https://coffeemesh.com
     description: main production server
