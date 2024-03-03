@@ -4,13 +4,21 @@ from ariadne import QueryType
 
 from exceptions import ItemNotFoundError
 from web.data import products, ingredients
+from copy import deepcopy
 
 query = QueryType()
 
 
 @query.field('allProducts')
 def resolve_all_products(*_):
-    return products
+
+    products_with_ingredients = [deepcopy(product) for product in products]
+    for product in products_with_ingredients:
+        for ingredient_recipe in product['ingredients']:
+            for ingredient in ingredients:
+                if ingredient['id'] == ingredient_recipe['ingredient']:
+                    ingredient_recipe['ingredient'] = ingredient
+        return products_with_ingredients
 
 
 @query.field('allIngredients')
@@ -48,8 +56,8 @@ def resolve_products(*_, input=None):
         key=lambda product: product.get(input['sortBy'], 0),
         reverse=input['sort'] == 'DESCENDING'
     )
-    return get_page(filtered, input['resultsPerPage'], input['page'])
-
+    # return get_page(filtered, input['resultsPerPage'], input['page'])
+    return filtered
 
 @query.field('product')
 def resolve_product(*_, id):

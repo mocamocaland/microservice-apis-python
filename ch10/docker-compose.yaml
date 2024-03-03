@@ -13,28 +13,28 @@ services:
     volumes:
       - database-data:/var/lib/postgresql/data
 
-#  api-order:
-#    image: order_service:1.0.2
-#    build: ./orders
-#    ports:
-#      - 8000:8000
-#    depends_on:
-#      - database
-#    environment:
-#      DB_URL: postgresql://postgres:postgres@database:5432/postgres
-#    volumes:
-#      - ./orders:/orders
-#  api-kitchen:
-#    image: kitchen_service:1.0.0
-#    build: ./kitchen
-#    ports:
-#      - 5000:5000
-#    depends_on:
-#      - database
-#    environment:
-#      DB_URL: postgresql://postgres:postgres@database:5432/postgres
-#    volumes:
-#      - ./kitchen:/kitchen
+  api-order:
+    image: order_service:1.0.2
+    build: ./orders
+    ports:
+      - 8000:8000
+    depends_on:
+      - database
+    environment:
+      DB_URL: postgresql://postgres:postgres@database:5432/postgres
+    volumes:
+      - ./orders:/orders
+  api-kitchen:
+    image: kitchen_service:1.0.0
+    build: ./kitchen
+    ports:
+      - 5000:5000
+    depends_on:
+      - database
+    environment:
+      DB_URL: postgresql://postgres:postgres@database:5432/postgres
+    volumes:
+      - ./kitchen:/kitchen
   api-product:
     image: product_service:1.0.0
     build: ./products
