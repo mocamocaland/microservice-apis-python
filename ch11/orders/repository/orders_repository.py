@@ -15,7 +15,7 @@ class OrdersRepository:
         return Order(**record.dict(), order_=record)
 
     def _get(self, id_, **filters):
-        return self.session.query(OrderModel).filter(OrderModel.id == str(id_)).filter_by(**filters).first()  # noqa: E501
+        return self.session.query(OrderModel).filter(OrderModel.id == str(id_)).filter_by(**filters).first()
 
     def get(self, id_, **filters):
         order = self._get(id_, **filters)

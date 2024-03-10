@@ -31,10 +31,11 @@ oas_doc = yaml.safe_load((Path(__file__).parent / "../oas.yaml").read_text())
 
 app.openapi = lambda: oas_doc
 
+
 class AuthorizeRequestMiddleware(BaseHTTPMiddleware):
     async def dispatch(
         self, request: Request, call_next: RequestResponseEndpoint
-   ) -> Response:
+       ) -> Response:
         if os.getenv("AUTH ON", "False") != "True":
             request.state.user_id = "test_user"
             return await call_next(request)
@@ -66,12 +67,14 @@ class AuthorizeRequestMiddleware(BaseHTTPMiddleware):
             MissingRequiredClaimError,
         ) as error:
             return JSONResponse(
-                status_code = status.HTTP_401_UNAUTHORIZED,
-                content = {"detail": str(error), "body": str(error)},
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                content={"detail": str(error), "body": str(error)},
             )
         else:
             request.state.user_id = token_payload["sub"]
             return await call_next(request)
+
+
 app.add_middleware(AuthorizeRequestMiddleware)
 
 app.add_middleware(
