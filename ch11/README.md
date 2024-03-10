@@ -55,16 +55,6 @@ $ docker compose exec -it api-order /bin/bash
 
 # こちらは必ず実行
 # $ PYTHONPATH=$(pwd) alembic upgrade heads
-
-
-# 個別でビルド、ランをする場合（docker compose upを実行してる場合、以下は不要）
-# orders_service
-$ docker build --no-cache -t orders_service:1.0.2 . 
-$ docker run --rm -p 8000:8000 -v ${PWD}:/orders orders_service:1.0.2
-
-# kitchen_srvice
-$ docker build --no-cache -t kitchen_service:1.0.0 . 
-$ docker run --rm -p 5000:5000 -v ${PWD}:/kitchen kitchen_service:1.0.0 
 ```
 
 ## mock API
