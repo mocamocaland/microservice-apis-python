@@ -49,5 +49,8 @@ $ ./node_modules/.bin/dredd orders/oas.yaml http://localhost:8000 --server "dock
 $ ./node_modules/.bin/dredd orders/oas.yaml http://localhost:8000 --server "docker-compose run --rm api-order uvicorn app:app --reload" --hooks-worker-handler=./orders/hooks.py --language=python
 
 # schemathesis
-$ schemathesis run orders/oas.yaml --base-url=http://localhost:8000  --hypothesis-database=none
+$ docker compose exec -it api-order-test /bin/bash
+# コンテナ内で実行する
+root@d254bdc8deb0:/orders# schemathesis run oas.yaml --base-url=http://localhost:8001  --hypothesis-database=none
+
 ```
