@@ -39,9 +39,22 @@ services:
     image: product_service:1.0.0
     build:
       context: ./products
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
     ports:
       - 8001:8000
+    depends_on:
+      - database
+    environment:
+      DB_URL: postgresql://postgres:postgres@database:5432/postgres
+    volumes:
+      - ./products:/products
+  api-product-test:
+    image: product_service_test:1.0.0
+    build:
+      context: ./products
+      dockerfile: Dockerfile.dev
+    ports:
+      - 8003:8000
     depends_on:
       - database
     environment:

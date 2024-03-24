@@ -18,6 +18,6 @@ COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 RUN apt-get update && apt-get install -y supervisor
 
-EXPOSE 8001
+EXPOSE 8002
 
 CMD ["/usr/bin/supervisord"]
