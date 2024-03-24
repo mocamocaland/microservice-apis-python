@@ -15,14 +15,15 @@ v20.11.1
 $ npm install dredd
 
 # テスト実行
-# dredd
+# dredd 
+# hooksなし
 $ ./node_modules/.bin/dredd orders/oas.yaml http://localhost:8000 --server "docker-compose run --rm api-order uvicorn app:app --reload"
-$ ./node_modules/.bin/dredd orders/oas.yaml http://localhost:8000 --server "docker-compose run --rm api-order uvicorn app:app --reload" --hookfiles=./orders/hooks.py --language=python
+# hooksあり
 $ ./node_modules/.bin/dredd orders/oas.yaml http://localhost:8000 --server "docker-compose run --rm api-order uvicorn app:app --reload" --hooks-worker-handler=./orders/hooks.py --language=python
 
 # schemathesis
 $ docker compose exec -it api-order-test /bin/bash
-# コンテナ内で実行する
+# コンテナ内で実行
 root@d254bdc8deb0:/orders# schemathesis run oas.yaml --base-url=http://localhost:8001  --hypothesis-database=none
 
 ```
