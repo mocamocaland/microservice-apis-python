@@ -1,0 +1,23 @@
+FROM python:3.11-slim
+
+RUN mkdir -p /orders/orders
+
+WORKDIR /orders
+
+RUN pip install -U pip
+COPY requirements.txt /orders/
+RUN pip install -r requirements.txt
+
+COPY dev-requirements.txt /orders/
+RUN pip install -r dev-requirements.txt
+
+COPY api /orders/orders/api/
+COPY oas.yaml /orders/
+COPY . /orders/
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+RUN apt-get update && apt-get install -y supervisor
+
+EXPOSE 8001
+
+CMD ["/usr/bin/supervisord"]
