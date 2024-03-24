@@ -1,12 +1,8 @@
 # ch12
 
+## Docker
 ```shell
 $ git clone git@github.com:mocamocaland/microservice-apis-python.git
-
-``` 
- 
-## API(docker)
-``` 
 $ cd ${your_path}/microservice-apis-python/ch12
 $ docker compose up
 ```
