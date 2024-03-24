@@ -31,4 +31,10 @@ root@d254bdc8deb0:/orders# schemathesis run oas_with_links.yaml --base-url=http:
 # 全てのチェックの適用
 root@d254bdc8deb0:/orders# schemathesis run oas_with_links.yaml --base-url=http://localhost:8001 --hypothesis-database=none --stateful=links --checks=all
 
+# GraphQL
+$  docker compose exec -it api-product-test /bin/bash
+# Schemathesisを実行
+root@c79f41361c9b:/products# schemathesis run --hypothesis-deadline=None http://localhost:8003/graphql
+
 ```
+
