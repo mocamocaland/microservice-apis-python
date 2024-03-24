@@ -1,0 +1,23 @@
+FROM python:3.11-slim
+
+RUN mkdir -p /products/products
+
+WORKDIR /products
+
+RUN pip install -U pip
+COPY requirements.txt /products/
+RUN pip install -r requirements.txt
+
+COPY dev-requirements.txt /products/
+RUN pip install -r dev-requirements.txt
+
+COPY web /products/products/web/
+COPY web/products.graphql /products/web/
+COPY . /products/
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+RUN apt-get update && apt-get install -y supervisor
+
+EXPOSE 8003
+
+CMD ["/usr/bin/supervisord"]
