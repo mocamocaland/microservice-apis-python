@@ -1,0 +1,52 @@
+version: "3.9"
+
+services:
+
+  database:
+    image: postgres:14.3
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+    volumes:
+      - database-data:/var/lib/postgresql/data
+
+  api-order:
+    image: order_service:1.1.0
+    build: ./orders
+    ports:
+      - 8000:8000
+    depends_on:
+      - database
+    environment:
+      DB_URL: postgresql://postgres:postgres@database:5432/postgres
+    volumes:
+      - ./orders:/orders
+#  api-kitchen:
+#    image: kitchen_service:1.0.0
+#    build: ./kitchen
+#    ports:
+#      - 5000:5000
+#    depends_on:
+#      - database
+#    environment:
+#      DB_URL: postgresql://postgres:postgres@database:5432/postgres
+#    volumes:
+#      - ./kitchen:/kitchen
+#  api-product:
+#    image: product_service:1.0.0
+#    build: ./products
+#    ports:
+#      - 8001:8001
+#    depends_on:
+#      - database
+#    environment:
+#      DB_URL: postgresql://postgres:postgres@database:5432/postgres
+#    volumes:
+#      - ./products:/products
+
+
+volumes:
+  database-data:
